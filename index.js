@@ -68,7 +68,7 @@ app.post("/add-user", (req, res) => {
     });
 });
 
-// DELETE: Delete user by userId from the database
+// DELETE: Delete user by name
 app.delete("/delete-user", (req, res) => {
   const { deleteName } = req.body;
   db("users")
@@ -83,11 +83,14 @@ app.delete("/delete-user", (req, res) => {
     });
 });
 
-// PUT: Update user by userId from the database
+// PUT: Update user by oldName from the database
 app.put("/update-users", (req, res) => {
+  console.log(req.body);
+  const { oldEditName, editName, email } = req.body;
+  console.log(oldEditName);
   db("users")
-    .where("id", "=", 1)
-    .update({ name: "Roman", email: "roman.su@hotmail.com" })
+    .where("name", "=", oldEditName)
+    .update({ name: editName, email: email })
     .then(() => {
       console.log("User Updated");
       return res.json({ msg: "User Updated" });
