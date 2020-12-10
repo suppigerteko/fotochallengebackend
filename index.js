@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
       console.log(data);
       res.json(data);
     })
+
     .catch((err) => {
       console.log(err);
     });
@@ -51,11 +52,12 @@ app.get("/:userId", (req, res) => {
 
 // POST: Create user and add them to the database
 app.post("/add-user", (req, res) => {
-  console.log("hallo");
-  const { name } = req.body;
+  console.log(req.body);
+  const { name, email } = req.body;
   db("users")
     .insert({
       name: name,
+      email: email,
     })
     .then(() => {
       console.log("user Added");
@@ -68,11 +70,9 @@ app.post("/add-user", (req, res) => {
 
 // DELETE: Delete user by userId from the database
 app.delete("/delete-user", (req, res) => {
-  const userId = req.body;
-  const userIdToDelete = Number(userId.userId);
-  console.log(userIdToDelete);
+  const { deleteName } = req.body;
   db("users")
-    .where("id", "=", userIdToDelete)
+    .where("name", "=", deleteName)
     .del()
     .then(() => {
       console.log("User Deleted");
@@ -87,7 +87,7 @@ app.delete("/delete-user", (req, res) => {
 app.put("/update-users", (req, res) => {
   db("users")
     .where("id", "=", 1)
-    .update({ name: "Roman" })
+    .update({ name: "Roman", email: "roman.su@hotmail.com" })
     .then(() => {
       console.log("User Updated");
       return res.json({ msg: "User Updated" });
