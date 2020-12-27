@@ -105,3 +105,24 @@ const port = process.env.PORT || 5000;
 app.listen(port, () =>
   console.log(`Server running on port ${port}, http://localhost:${port}`)
 );
+
+// POST: Register new User
+app.post("/register-user", (req, res) => {
+  console.log(req.body);
+  const { userData } = req.body;
+
+  db("users")
+    .insert({
+      firstname: userData.firstName,
+      lastname: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+    })
+    .then(() => {
+      console.log("register User");
+      return res.json({ msg: "register User" });
+    })
+    .catch((err) => {
+      return res.json({ msg: "register User" });
+    });
+});
